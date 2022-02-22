@@ -1,12 +1,19 @@
 import json
 import os
+import re
 
 class Utils:
 
+
+    def getValidFilename(self, s):
+        s = str(s).strip().replace(' ', '_')
+        return re.sub(r'(?u)[^-\w.]', '', s)
+
+
     def saveToJson (self, data, path):
 
-        #algunas descripciones llevan una barra y al salvar con la barra, kabum:
-        nombre = data['description'].split('/')[0].replace(' ','_')
+        
+        nombre = self.getValidFilename (data['description'])
 
         with open(path + '/' + nombre, "w") as outfile:
             json.dump(json.dumps(data['items']), outfile)

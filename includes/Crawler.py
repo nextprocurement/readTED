@@ -1,3 +1,9 @@
+'''
+En 192.168.148.139, levantamos el docker:
+docker pull juusechec/firefox-headless-selenium-python
+docker run -p 4444:4444 -p 5900 -d . --name firefox-headless-selenium-python
+'''
+
 
 from selenium.webdriver.firefox.options import Options
 from selenium import webdriver 
@@ -60,27 +66,27 @@ class nightCrawler ():
                     if not (currentdate.year == publication.year and publication.month >= mfrom):
                         salir = True
                         break
-                    else:
-                        data = {}                
-                        data['id']              = td[1].text
-                        data['url']             = td[1].find_element (By.TAG_NAME,"a").get_attribute('href')
-                        data['description']     = td[2].text
-                        data['country']         = td[3].text
-                        data['publication']     = td[4].text
-                        data['deadline']        = td[5].text
+                else:
+                    data = {}                
+                    data['id']              = td[1].text
+                    data['url']             = td[1].find_element (By.TAG_NAME,"a").get_attribute('href')
+                    data['description']     = td[2].text
+                    data['country']         = td[3].text
+                    data['publication']     = td[4].text
+                    data['deadline']        = td[5].text
 
-                        pos1 = td[2].text.find('Type of buyer')
-                        pos2 = td[2].text.find('Notice type')
-                        pos3 = td[2].text.find('Type of procedure')
-                        pos4 = td[2].text.find('Type of contract')
+                    pos1 = td[2].text.find('Type of buyer')
+                    pos2 = td[2].text.find('Notice type')
+                    pos3 = td[2].text.find('Type of procedure')
+                    pos4 = td[2].text.find('Type of contract')
 
-                        data['TypeOfBuyer']         =   td[2].text[pos1:pos2].replace ('Type of buyer:','')
-                        data['Notice type']         =   td[2].text[pos2:pos3].replace ('Notice type:','')
-                        data['TypeOfProcedure']     =   td[2].text[pos3:pos4].replace ('Type of procedure:','')
-                        data['TypeOfContract']      =   td[2].text[pos4:].replace ('Type of contract:','')
+                    data['TypeOfBuyer']         =   td[2].text[pos1:pos2].replace ('Type of buyer:','')
+                    data['Notice type']         =   td[2].text[pos2:pos3].replace ('Notice type:','')
+                    data['TypeOfProcedure']     =   td[2].text[pos3:pos4].replace ('Type of procedure:','')
+                    data['TypeOfContract']      =   td[2].text[pos4:].replace ('Type of contract:','')
 
 
-                        listItem.append (data)
+                    listItem.append (data)
 
             contador += 1
 
