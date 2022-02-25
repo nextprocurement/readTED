@@ -4,7 +4,7 @@ from pathlib import Path
 import re
 import uuid
 import glob
-
+import time
 
 class Utils:
 
@@ -14,13 +14,9 @@ class Utils:
         return re.sub(r'(?u)[^-\w.]', '', s)
 
 
-    def saveToJson (self, data, path):
-
-        
-        nombre = self.getValidFilename (data['description'])
-
-        with open(path + '/' + nombre, "w") as outfile:
-            json.dump(json.dumps(data['items']), outfile)
+    def saveToJson (self, data, file):
+        with open(file, "w") as outfile:
+            json.dump(json.dumps(data), outfile)
 
     def readJson (self, file, is_str=False):
         try:
@@ -55,6 +51,18 @@ class Utils:
     def getRandomNameFile (self, prefix = ''):
         #return ( tempfile.NamedTemporaryFile(prefix=prefix))
         return prefix + uuid.uuid4().hex
+
+    def getNameFileWithTimeStamp (self, name, prefix = None):
+        
+        #el nombre viene como una ruta completa, /home/pepito/data.txt, nos quedamos con el data.txt
+        head, tail = os.path.split(name)
+
+        if prefix:
+            tail = prefix + '_' + tail
+
+        #y le ponemos un timestamp para hacerlo unico.
+        return tail + '_' + str(time.time()).replace('.','_')
+
 
 
         

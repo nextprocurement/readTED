@@ -59,34 +59,34 @@ class nightCrawler ():
                 td = tr.find_elements (By.TAG_NAME,"td")
 
                 #si queremos hacer bajadas incrementales usamos el parametro mfrom, lo que hace es indicar el mes desde el cual se bajan los datos, siempre según el año actual
-                if mfrom:
+                if mfrom:                    
                     publication = datetime.strptime(td[4].text,'%d/%m/%Y')
                     currentdate = date.today()
 
                     if not (currentdate.year == publication.year and publication.month >= mfrom):
                         salir = True
                         break
-                else:
-                    data = {}                
-                    data['id']              = td[1].text
-                    data['url']             = td[1].find_element (By.TAG_NAME,"a").get_attribute('href')
-                    data['description']     = td[2].text
-                    data['country']         = td[3].text
-                    data['publication']     = td[4].text
-                    data['deadline']        = td[5].text
 
-                    pos1 = td[2].text.find('Type of buyer')
-                    pos2 = td[2].text.find('Notice type')
-                    pos3 = td[2].text.find('Type of procedure')
-                    pos4 = td[2].text.find('Type of contract')
+                data = {}                
+                data['id']              = td[1].text
+                data['url']             = td[1].find_element (By.TAG_NAME,"a").get_attribute('href')
+                data['description']     = td[2].text
+                data['country']         = td[3].text
+                data['publication']     = td[4].text
+                data['deadline']        = td[5].text
 
-                    data['TypeOfBuyer']         =   td[2].text[pos1:pos2].replace ('Type of buyer:','')
-                    data['Notice type']         =   td[2].text[pos2:pos3].replace ('Notice type:','')
-                    data['TypeOfProcedure']     =   td[2].text[pos3:pos4].replace ('Type of procedure:','')
-                    data['TypeOfContract']      =   td[2].text[pos4:].replace ('Type of contract:','')
+                pos1 = td[2].text.find('Type of buyer')
+                pos2 = td[2].text.find('Notice type')
+                pos3 = td[2].text.find('Type of procedure')
+                pos4 = td[2].text.find('Type of contract')
+
+                data['TypeOfBuyer']         =   td[2].text[pos1:pos2].replace ('Type of buyer:','')
+                data['Notice type']         =   td[2].text[pos2:pos3].replace ('Notice type:','')
+                data['TypeOfProcedure']     =   td[2].text[pos3:pos4].replace ('Type of procedure:','')
+                data['TypeOfContract']      =   td[2].text[pos4:].replace ('Type of contract:','')
 
 
-                    listItem.append (data)
+                listItem.append (data)
 
             contador += 1
 
@@ -135,7 +135,9 @@ class nightCrawler ():
             data ['description'] = link['description']
             data['items'] = self.__getSearchResults (link['url'], mfrom)
 
-            soUtils.saveToJson (data,path)            
+            nombre = path + '/' + soUtils.getValidFilename (data['description'])
+
+            soUtils.saveToJson (data['items'],nombre)
 
 
     def saveNUTS (self, url, path, mfrom):
@@ -163,7 +165,9 @@ class nightCrawler ():
             data ['description'] = link['description']
             data['items'] = self.__getSearchResults (link['url'], mfrom)
 
-            soUtils.saveToJson (data,path)                    
+            nombre = path + '/' + soUtils.getValidFilename (data['description'])
+
+            soUtils.saveToJson (data['items'],nombre)                    
 
 
 
