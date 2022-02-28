@@ -53,11 +53,12 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Script en python para salvar los documentos del TED (los json con los ids se suponen ya generados)')
     parser.add_argument('-b','--bpath', help='Ruta base de la estructura de documentos', required=True )
     parser.add_argument('-p','--path', help='Ruta con los datos de las tablas de las que se bajaran los documentos', required=True )
+    parser.add_argument('-y','--year', help='año del que bajar los documentos',type=int, choices=range(2015,2022),  required=True )
 
     arg = parser.parse_args()
     docu = Document ( arg.bpath, arg.path )
 
-    print (docu.saveDocuments())
+    print (docu.saveDocuments( arg.year))
 
     #print (soUtils.getAllFilesInDir (arg.path + '/' + 'index/' ))
 
